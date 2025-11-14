@@ -1,0 +1,55 @@
+name: Build LibreCAD ARM64 Qt6 + DEB
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - name: Checkout workflow repo
+        uses: actions/checkout@v4
+
+      - name: Clone LibreCAD source
+        run: |
+          git clone https://github.com/LibreCAD/LibreCAD.git src
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            qt6-base-dev qt6-svg-dev qt6-tools-dev qt6-tools-dev-tools \
+            qt6-l10n-tools \
+            libmuparser-dev libcgal-dev libboost-dev \
+            cmake ninja-build build-essential g++ \
+            dpkg-dev fakeroot
+
+      - name: Configure build
+        run: |
+          mkdir build
+          cd build
+          cmake ../src \
+            -G Ninja \
+            -DWITH_GUI=ON \
+            -DWITH_QT6=ON \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCPACK_DEBIAN_FILE_NAME=DEB
+
+      - name: Build LibreCAD
+        run: |
+          cd build
+          ninja
+
+      - name: Create DEB package via CMake target
+        run: |
+          cd build
+          cmake --build . --target package
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: librecad-arm64
+          path: |
+            build/librecad
+            build/*.deb
