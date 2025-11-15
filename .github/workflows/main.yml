@@ -1,21 +1,21 @@
 name: Continuous build
+
 on:
-  push:
-    branches:
-      - master
-      - 2.2.1
+  workflow_dispatch :
 
 jobs:
 
   BuildLinuxAarch64:
     runs-on: ubuntu-24.04-arm
-    outputs:
-      output1: ${{ steps.artifact-upload-step.outputs.artifact-id }}
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@main
-        with:
-          fetch-depth: 0
+      - name: Checkout workflow repo
+        uses: actions/checkout@v4
+
+      - name: Clone LibreCAD source
+        run: |
+          git clone https://github.com/LibreCAD/LibreCAD.git
+
 
       - name: Install Qt and dependencies
         run: |
@@ -64,7 +64,7 @@ jobs:
 
       - name: Upload artifact
         id: artifact-upload-step
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: linuxAssetsAarch64
           path: LibreCAD*.AppImage
