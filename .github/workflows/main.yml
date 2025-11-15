@@ -43,6 +43,7 @@ jobs:
 
       - name: Build and analyze
         run: |
+          cd LibreCAD
           export CC=clang
           export CXX=clang++
           export ANALYZE="scan-build-18 -o out --use-cc=/usr/bin/clang++ --use-analyzer=/usr/bin/clang++ "
