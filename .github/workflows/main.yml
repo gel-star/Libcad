@@ -54,7 +54,7 @@ jobs:
 
       - name: Create AppImage
         run: |
-          find unix/
+          #find unix/
           ./CI/build-appimg-aarch64.sh
           #mv LibreCAD*.AppImage LibreCAD-`git describe --always`-aarch64.AppImage
 
