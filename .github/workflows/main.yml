@@ -6,7 +6,8 @@ on:
       - 2.2.1
 
 jobs:
-    BuildLinuxAarch64:
+
+  BuildLinuxAarch64:
     runs-on: ubuntu-24.04-arm
     outputs:
       output1: ${{ steps.artifact-upload-step.outputs.artifact-id }}
