@@ -54,13 +54,14 @@ jobs:
 
       - name: Create AppImage
         run: |
-          #find unix/
           cd LibreCAD
+          find unix/
           ./CI/build-appimg-aarch64.sh
           #mv LibreCAD*.AppImage LibreCAD-`git describe --always`-aarch64.AppImage
 
       - name: List files
         run: |
+          cd LibreCAD
           echo ${{ github.workspace }} && ls ${{ github.workspace }}
         shell: bash
 
@@ -69,7 +70,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: linuxAssetsAarch64
-          path: LibreCAD*.AppImage
+          path: LibreCAD/LibreCAD*.AppImage
           retention-days: 2
 
   
